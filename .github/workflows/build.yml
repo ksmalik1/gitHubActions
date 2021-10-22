@@ -24,6 +24,12 @@ jobs:
           repository: mirraj2/bowser    
       - name: Build Jar
         run: "java -jar ./actions/lib/JarJar.jar {\"project\": \"./actions\", \"main\": \"actions.Calculator\", \"target\": \"Calculator.jar\"}"
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 15
+        with:
+          limit-access-to-actor: true  
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
