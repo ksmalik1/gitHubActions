@@ -1,0 +1,31 @@
+name: Build
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/checkout@master
+        with:
+          repository: mirraj2/ox
+      - uses: actions/checkout@master
+        with:
+          repository: mirraj2/EZDB    
+      - uses: actions/checkout@master
+        with:
+          repository: mirraj2/bowser    
+      - name: Build Jar
+        run: "java -jar ./actions/lib/JarJar.jar {\"project\": \"./actions\", \"main\": \"actions.Calculator\", \"target\": \"Calculator.jar\"}"
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
