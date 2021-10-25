@@ -27,11 +27,11 @@ jobs:
           repository: mirraj2/bowser
           path: bowser
       - name: Build Jar
-        run: "java -jar ./actions/lib/JarJar.jar '{\"project\": \"./actions\", \"main\": \"actions.Calculator\", \"target\": \"Calculator.jar\"}'"
+        run: "java -jar ./gitHubActions/actions/lib/JarJar.jar '{\"project\": \"./gitHubActions/actions\", \"main\": \"actions.Calculator\", \"target\": \"Calculator.jar\"}'"
       - name: Run Tests
-        run: "java -javaagent:./actions/lib/jacocoagent.jar=includes=actions.** -jar ./actions/lib/junit-platform-console-standalone-1.8.1.jar --reports-dir=reports --class-path Calculator.jar --scan-class-path"
+        run: "java -javaagent:./gitHubActions/actions/lib/jacocoagent.jar=includes=actions.** -jar ./gitHubActions/actions/lib/junit-platform-console-standalone-1.8.1.jar --reports-dir=reports --class-path Calculator.jar --scan-class-path"
       - name: Generate Coverate Report
-        run: "java -jar ./actions/lib/jacococli.jar report jacoco.exec --classfiles actions/bin --xml reports/Coverage.xml"        
+        run: "java -jar ./gitHubActions/actions/lib/jacococli.jar report jacoco.exec --classfiles gitHubActions/actions/bin --xml reports/Coverage.xml"        
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
